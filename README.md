@@ -17,4 +17,5 @@ Added concept of primary side and secondary side in the application.
 5. Run docker: `docker compose up -d`
 6. Run dependency installation: `docker exec -it paycomet-app composer install`
 7. Run migrations: `docker exec -it paycomet-app php artisan migrate`
+7. Generate key: `docker exec -it paycomet-app php artisan key:generate`
 8. Open in browser [http://localhost](http://localhost).
