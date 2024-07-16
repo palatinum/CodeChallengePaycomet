@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+    # Application
+    app:
+        container_name: paycomet-app
+        build:
+            context: .
+            dockerfile: ./.docker/app.dockerfile
+        depends_on:
+            - "db"
+        networks:
+            - paycomet-network
+        volumes:
+            - .:/var/www
+    # Web Server
+    web:
+        container_name: paycomet-web
+        build:
+            context: .
+            dockerfile: ./.docker/web.dockerfile
+        depends_on:
+            - "app"
+        ports:
+            - 80:80
+        networks:
+            - paycomet-network
+        volumes:
+            - .:/var/www
+    # Database
+    db:
+        container_name: paycomet-db
+        image: mysql:8.0
+        volumes:
+            - dbdata:/var/lib/mysql
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_USER: ${DB_USERNAME}
+        ports:
+            - 3306:3306
+        networks:
+            - paycomet-network
+volumes:
+    dbdata:
+networks:
+    paycomet-network:
+        driver: bridge
